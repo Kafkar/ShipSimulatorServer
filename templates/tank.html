@@ -1,0 +1,32 @@
+<!-- templates/tank.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tank Level Control</title>
+</head>
+<body>
+    <h1>Tank Level Control</h1>
+    <form id="tank-form">
+        <label for="level">Tank Level (0-100):</label>
+        <input type="number" id="level" name="level" min="0" max="100" value="{{ level }}">
+        <button type="submit">Set Level</button>
+    </form>
+    <p id="current-level">Current Level: <span id="level-value">{{ level }}</span></p>
+
+    <script>
+        document.getElementById('tank-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            fetch('/tank', {
+                method: 'POST',
+                body: new FormData(this),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('level-value').textContent = data.level;
+            });
+        });
+    </script>
+</body>
+</html>
